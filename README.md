@@ -4,6 +4,12 @@ A working Flutter dashboard for demonstrating chart capabilities to stakeholders
 
 ![Actual Flutter render, synthetic demo mode](docs/dashboard.png)
 
+## Live web demo
+
+[Open Flutter Charts Lab](https://asamiiii.github.io/flutter-charts-lab/)
+
+Hosted on GitHub Pages. `.github/workflows/pages.yml` builds a release with locally hosted web rendering resources and deploys updates from main. No installation is needed. Leave Demo mode off to fetch real forecasts.
+
 ## Run
 
 ```sh

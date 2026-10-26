@@ -1,0 +1,17 @@
+name: flutter_charts_lab
+description: A practical Flutter chart showcase powered by Open-Meteo.
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  fl_chart: 1.3.0
+  http: ^1.5.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true

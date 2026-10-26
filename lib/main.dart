@@ -22,7 +22,7 @@ class _ChartsLabState extends State<ChartsLab> {
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Charts Lab',
+        title: 'Flutter Charts Demo',
         themeMode: dark ? ThemeMode.dark : ThemeMode.light,
         theme: _theme(Brightness.light),
         darkTheme: _theme(Brightness.dark),
@@ -147,42 +147,11 @@ class _DashboardState extends State<Dashboard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _header(),
-                          const SizedBox(height: 32),
-                          Text(
-                            'REAL DATA. DIFFERENT PERSPECTIVES.',
-                            style: TextStyle(
-                              color: palette[1],
-                              fontSize: 11,
-                              letterSpacing: 2,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            'Make the numbers\ntell a story.',
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w800,
-                                  height: 1.15,
-                                  letterSpacing: -1.5,
-                                ),
-                          ),
-                          const SizedBox(height: 14),
-                          const Text(
-                            'One Flutter codebase. Ten chart styles. Explore a real weather forecast from API to pixels.',
-                            style: TextStyle(color: Colors.grey, height: 1.7),
-                          ),
-                          const SizedBox(height: 26),
+                          const SizedBox(height: 20),
                           _controls(),
                           const SizedBox(height: 20),
                           _source(),
-                          if (rows != null) ...[
-                            const SizedBox(height: 24),
-                            _metrics(rows),
-                          ],
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
@@ -277,23 +246,6 @@ class _DashboardState extends State<Dashboard> {
                                 );
                               },
                             ),
-                          const SizedBox(height: 32),
-                          Wrap(
-                            spacing: 16,
-                            runSpacing: 10,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              const Text(
-                                'Built with Flutter + fl_chart',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              TextButton.icon(
-                                onPressed: _about,
-                                icon: const Icon(Icons.info_outline, size: 16),
-                                label: const Text('About this showcase'),
-                              ),
-                            ],
-                          ),
                           const SizedBox(height: 24),
                         ],
                       ),
@@ -310,35 +262,16 @@ class _DashboardState extends State<Dashboard> {
 
   Widget _header() => Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: palette[0],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(
-              Icons.stacked_line_chart_rounded,
-              color: Colors.white,
+          Expanded(
+            child: Text(
+              'Flutter Charts Demo',
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'CHARTS LAB',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(fontWeight: FontWeight.w800, letterSpacing: 2),
-                ),
-                const Text(
-                  'A Flutter capability showcase',
-                  style: TextStyle(color: Colors.grey, fontSize: 11),
-                ),
-              ],
-            ),
+          IconButton(
+            tooltip: 'Data source',
+            onPressed: _about,
+            icon: const Icon(Icons.info_outline),
           ),
           IconButton(
             tooltip:
@@ -413,98 +346,23 @@ class _DashboardState extends State<Dashboard> {
         ],
       );
 
-  Widget _source() => Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: (_demo ? palette[2] : palette[1]).withValues(alpha: .08),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Wrap(
-          spacing: 12,
-          runSpacing: 8,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Icon(
-              _demo ? Icons.science_outlined : Icons.cloud_done_outlined,
-              size: 18,
-              color: _demo ? palette[2] : palette[1],
-            ),
-            Text(
-              _demo
-                  ? 'SYNTHETIC DEMO · not real weather'
-                  : 'OPEN-METEO API · model forecast, not sensor measurements',
-              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-            ),
-            if (_data != null)
-              Text(
-                '${_data!.readings.length} hourly readings · All times UTC · fetched ${_data!.fetchedAt.toUtc().toIso8601String().substring(11, 19)} UTC',
-                style: const TextStyle(fontSize: 11),
-              ),
-          ],
-        ),
-      );
-
-  Widget _metrics(List<Reading> rows) {
-    final avg = rows.fold<double>(0, (s, r) => s + r.temperature) / rows.length;
-    final wind = rows.fold<double>(0, (s, r) => s + r.wind) / rows.length;
-    final rain = rows.fold<double>(0, (s, r) => s + r.rain);
-    final items = [
-      ('MEAN TEMPERATURE', '${avg.toStringAsFixed(1)}°', Icons.thermostat),
-      ('MEAN WIND SPEED', '${wind.toStringAsFixed(1)} km/h', Icons.air),
-      (
-        'TOTAL PRECIPITATION',
-        '${rain.toStringAsFixed(1)} mm',
-        Icons.water_drop_outlined,
-      ),
-    ];
-    return LayoutBuilder(
-      builder: (context, box) => Wrap(
-        spacing: 16,
-        runSpacing: 12,
+  Widget _source() => Wrap(
+        spacing: 12,
+        runSpacing: 4,
         children: [
-          for (final item in items)
-            SizedBox(
-              width:
-                  box.maxWidth >= 700 ? (box.maxWidth - 32) / 3 : box.maxWidth,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(22),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item.$1,
-                              style: const TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              item.$2,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Icon(item.$3, color: palette[0]),
-                    ],
-                  ),
-                ),
-              ),
+          Text(
+            _demo
+                ? 'SYNTHETIC DEMO · not real weather'
+                : 'Open-Meteo forecast data',
+            style: const TextStyle(fontSize: 12, color: Colors.grey),
+          ),
+          if (_data != null)
+            Text(
+              '${_data!.readings.length} hourly readings · UTC',
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
         ],
-      ),
-    );
-  }
+      );
 
   Widget _chartCard(int kind, List<Reading> rows) => Card(
         child: Padding(
@@ -664,16 +522,12 @@ class _DashboardState extends State<Dashboard> {
   void _about() => showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('From API to pixels'),
-          content: const SingleChildScrollView(
-            child: SelectableText(
-              'HTTP JSON → validated hourly readings → aggregations → Flutter charts.\n\n'
-              'The chart widgets consume typed Reading objects. Replace WeatherApi with your business API to reuse the presentation layer.\n\n'
-              'Real data: Open-Meteo numerical weather model forecasts, refreshed on demand. No automatic live stream. All timestamps use UTC.\n\n'
-              'Demo mode uses deterministic synthetic data and is always labeled. Failed requests never silently fall back to demo data.\n\n'
-              'Data attribution: Open-Meteo (https://open-meteo.com/), CC BY 4.0. Free endpoint for evaluation/prototyping; check provider terms before commercial deployment.\n\n'
-              'Charts: fl_chart (MIT). Heatmap: Flutter widgets. Gauge: Flutter CircularProgressIndicator.',
-            ),
+          title: const Text('Data source'),
+          content: const SelectableText(
+            'Open-Meteo (https://open-meteo.com/), CC BY 4.0.\n\n'
+            'Weather forecasts for chart demonstration. All times are UTC. '
+            'Demo mode uses synthetic data.\n\n'
+            'Charts: fl_chart (MIT).',
           ),
           actions: [
             TextButton(
